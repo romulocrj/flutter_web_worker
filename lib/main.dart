@@ -77,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
+    myWorker!.postMessage(WkAction(kind: WkAction.echo, value: _counter));
   }
 
   void _startWorker() {

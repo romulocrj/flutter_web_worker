@@ -3417,17 +3417,16 @@
   A.MessageEvent.prototype = {};
   A.main_closure.prototype = {
     call$1($event) {
-      var t2, i,
+      var i,
         action = type$.WkAction._as(J.get$data$x(type$.MessageEvent._as($event))),
         t1 = J.getInterceptor$x(action);
       A.printString("worker: got " + A.S(t1.get$kind(action)) + " from master, raising it from " + A.S(t1.get$value(action)) + "...");
       if (J.$eq$(t1.get$kind(action), "echo")) {
-        t2 = t1.get$value(action);
-        if (typeof t2 !== "number")
-          return t2.$add();
-        self.postMessage({kind: "echo", value: t2 + 1});
-      }
-      if (J.$eq$(t1.get$kind(action), "start")) {
+        t1 = t1.get$value(action);
+        if (typeof t1 !== "number")
+          return t1.$add();
+        self.postMessage({kind: "echo", value: t1 + 1});
+      } else if (J.$eq$(t1.get$kind(action), "start")) {
         for (i = 0; i < 9900000; ++i)
           if (B.JSInt_methods.$mod(i, 1002) === 0)
             self.postMessage({kind: "progress", value: i / 9900000});
