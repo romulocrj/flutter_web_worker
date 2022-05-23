@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_worker/model.dart';
 
-html.Worker? myWorker;
 main() async {
   runApp(const MyApp());
 }
@@ -39,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool _showProgress = false;
   double _progress = 0;
+  html.Worker? _myWorker;
 
   @override
   void initState() {
@@ -48,8 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _configureWebWorker() {
     if (html.Worker.supported) {
-      myWorker = html.Worker("wk.dart.js");
-      myWorker!.onMessage.listen((event) {
+      _myWorker = html.Worker("wk.dart.js");
+      _myWorker!.onMessage.listen((event) {
         if (kDebugMode) {
           print("main:receive from worker: ${event.data}");
         }
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         }
       });
-      myWorker!.postMessage(WkAction(kind: WkAction.echo, value: 10));
+      _myWorker!.postMessage(WkAction(kind: WkAction.echo, value: 10));
     } else {
       debugPrint('Your browser doesn\'t support web workers.');
     }
@@ -77,12 +77,12 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
-    myWorker!.postMessage(WkAction(kind: WkAction.echo, value: _counter));
+    _myWorker!.postMessage(WkAction(kind: WkAction.echo, value: _counter));
   }
 
   void _startWorker() {
     setState(() {
-      myWorker!.postMessage(WkAction(kind: WkAction.start, value: _counter));
+      _myWorker!.postMessage(WkAction(kind: WkAction.start, value: _counter));
       _showProgress = true;
     });
   }
