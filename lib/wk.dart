@@ -18,8 +18,6 @@ external void postMessage(obj);
 external set onMessage(f);
 
 main() {
-  const length = 9900000;
-
   onMessage = allowInterop((event) {
     var e = event as MessageEvent;
     var action = e.data as WkAction;
@@ -29,10 +27,11 @@ main() {
       postMessage(WkAction(kind: WkAction.echo, value: action.value + 1));
     } else if (action.kind == WkAction.start) {
       // start a long running action
-      for (var i = 0; i < length; i++) {
+      for (var i = 0; i < WkAction.maxLoopLength; i++) {
         if (i % 1002 == 0) {
           //feedback
-          postMessage(WkAction(kind: WkAction.progress, value: (i / length)));
+          postMessage(WkAction(
+              kind: WkAction.progress, value: (i / WkAction.maxLoopLength)));
         }
       }
       //end

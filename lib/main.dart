@@ -6,6 +6,7 @@ import 'dart:html' as html;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_web_worker/model.dart';
 
 main() async {
@@ -81,9 +82,31 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _startWorker() {
+    if (_showProgress) return;
     setState(() {
       _myWorker!.postMessage(WkAction(kind: WkAction.start, value: _counter));
       _showProgress = true;
+    });
+  }
+
+  void _benchmark() {
+    setState(() {
+      _showProgress = true;
+      _progress = 0;
+    });
+
+    for (var i = 0; i < WkAction.maxLoopLength; i++) {
+      if (i % 1002 == 0) {
+        setState(() {
+          _progress = i / WkAction.maxLoopLength;
+          if (kDebugMode) {
+            print(_progress);
+          }
+        });
+      }
+    }
+    setState(() {
+      _showProgress = false;
     });
   }
 
@@ -115,8 +138,15 @@ class _MyHomePageState extends State<MyHomePage> {
         _showProgress
             ? const CircularProgressIndicator()
             : FloatingActionButton(
+                onPressed: _benchmark,
+                tooltip: 'Start Benchmark',
+                child: const Icon(Icons.slow_motion_video_outlined),
+              ),
+        _showProgress
+            ? const CircularProgressIndicator()
+            : FloatingActionButton(
                 onPressed: _startWorker,
-                tooltip: 'Start',
+                tooltip: 'Start Worker',
                 child: const Icon(Icons.play_arrow),
               ),
         FloatingActionButton(

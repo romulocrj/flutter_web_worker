@@ -1,6 +1,6 @@
 # flutter_web_worker
 
-A Flutter Flutter Web project with web workers.
+A Flutter Web example project with web workers.
 
 ## Getting Started
 

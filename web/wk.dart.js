@@ -3427,9 +3427,9 @@
           return t1.$add();
         self.postMessage({kind: "echo", value: t1 + 1});
       } else if (J.$eq$(t1.get$kind(action), "start")) {
-        for (i = 0; i < 9900000; ++i)
+        for (i = 0; i < 100000000; ++i)
           if (B.JSInt_methods.$mod(i, 1002) === 0)
-            self.postMessage({kind: "progress", value: i / 9900000});
+            self.postMessage({kind: "progress", value: i / 100000000});
         t1 = t1.get$value(action);
         if (typeof t1 !== "number")
           return t1.$add();

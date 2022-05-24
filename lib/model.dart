@@ -8,6 +8,7 @@ import 'package:js/js.dart';
 @JS()
 @anonymous
 class WkAction {
+  static const maxLoopLength = 100000000;
   static const echo = "echo";
   static const progress = "progress";
   static const start = "start";
